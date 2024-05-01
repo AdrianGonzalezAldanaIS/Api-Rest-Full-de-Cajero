@@ -1,0 +1,2 @@
+class TipoDatoException:
+    """Excepcion personalizada   """
