@@ -14,6 +14,7 @@ class TarjetaDao(ITarjeta):
     """
     @classmethod
     def consulta_tarjeta(cls, id):
+        tarjeta = None
         if isinstance(id, int):
             try:
                 connection1 = ManejadorBaseDatos.get_connection()
@@ -21,9 +22,12 @@ class TarjetaDao(ITarjeta):
                     cursor.execute("SELECT * FROM tarjetas WHERE id_tarjeta = %s;", (id,))
                     row = cursor.fetchone()
                     print("row1111: ", row)
-                    tarjeta = Tarjeta(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
-                    tarjeta = tarjeta.to_JSON()
-                    print("tarjeta: ", tarjeta)
+                    if row is not None:
+                        tarjeta = Tarjeta(row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8])
+                        tarjeta = tarjeta.to_JSON()
+                        print("tarjeta: ", tarjeta)
+                    else :
+                        tarjeta = None 
                 """    
                 connection2 = ManejadorBaseDatos.get_connection()
                 with connection2.cursor() as cursor:
@@ -39,6 +43,7 @@ class TarjetaDao(ITarjeta):
     
     @classmethod
     def verifica_tarjeta(cls, id):
+        trjeta = None
         if isinstance(id, int) and id >= 0:
             try:
                 connection = ManejadorBaseDatos.get_connection()
@@ -46,9 +51,12 @@ class TarjetaDao(ITarjeta):
                     cursor.execute("SELECT id_tarjeta, verificada, fecha_verificada FROM tarjetas WHERE id_tarjeta = %s;", (id,))
                     row = cursor.fetchone()
                     print("row: ", row)
-                    tarjeta = Tarjeta(id_tarjeta=row[0], verificada=row[1], fecha_verificada=row[2])
-                    tarjeta = tarjeta.to_JSON()
-                    print("tarjeta: ", tarjeta)
+                    if row is not None:
+                        tarjeta = Tarjeta(id_tarjeta=row[0], verificada=row[1], fecha_verificada=row[2])
+                        tarjeta = tarjeta.to_JSON()
+                        print("tarjeta: ", tarjeta)
+                    else:
+                        tarjeta = None
             except Exception as ex:
                 raise BaseException(ex) 
         else:
@@ -77,15 +85,19 @@ class TarjetaDao(ITarjeta):
     
     @classmethod
     def verifica_bloqueo(cls, id):
+        tarjeta = None
         if isinstance(id, int) and id >= 0:
             try:
                 connection = ManejadorBaseDatos.get_connection()
                 with connection.cursor() as cursor:
                     cursor.execute("SELECT id_tarjeta, bloqueada, fecha_verificada FROM tarjetas WHERE id_tarjeta = %s;", (id,))
                     row = cursor.fetchone()
-                    tarjeta = Tarjeta(id_tarjeta=row[0], bloqueada=row[1], fecha_verificada=row[2])
-                    tarjeta = tarjeta.to_JSON()
-                    print("tar", tarjeta)
+                    if row is not None:
+                        tarjeta = Tarjeta(id_tarjeta=row[0], bloqueada=row[1], fecha_verificada=row[2])
+                        tarjeta = tarjeta.to_JSON()
+                        print("tar", tarjeta)
+                    else:
+                        tarjeta = None
             except Exception as ex:
                 print(ex)
         else:
@@ -131,6 +143,7 @@ class TarjetaDao(ITarjeta):
                 connection.commit()
         else:
             raise BaseException("El tipo de dato debe ser un entero") 
+        print("Res", es_valida, filas_afectadas)
         return es_valida, filas_afectadas
     
     @classmethod
