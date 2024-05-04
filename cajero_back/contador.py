@@ -28,7 +28,7 @@ def contador(programa):
         print(error)
     return count
 
-routes_files = ['src\\database\\db.py', 'src\\exceptions\\BdException.py', 'src\\models\\entities\\Tarjeta.py', 'src\\models\\services\\ServicioTarjeta.py', 'src\\models\\ITarjeta.py', 'src\\models\\TarjetaDAO.py', 'src\\routes\\TarjetasRoutes.py', 'src\\tests\\test_conn_bd.py', 'src\\tests\\test_querys_tarjetas.py', 'src\\utils\Dateformat.py', 'src\\app.py', 'src\\config.py']
+routes_files = ['src\\dao\\TarjetaDAO.py', 'src\\dao\\PagoServicioTelefonoDAO.py', 'src\\database\\postgres_db.py', 'src\\exceptions\\BdException.py', 'src\\interfaces\\ITarjeta.py', 'src\\interfaces\\IPagoServicioTelefono.py', 'src\\models\\Adeudo.py', 'src\\models\\PagoServicio.py', 'src\\models\\Tarjeta.py', 'src\\models\\TelefonoDetalle.py', 'src\\models\\UsuarioDetalle.py', 'src\\routes\\TarjetasRoutes.py', 'src\\routes\\PagosServiciosTelefonoRoutes.py', 'src\\services\\ServicioTarjeta.py', 'src\\services\\ServicioPagosServicios.py', 'src\\tests\\test_conn_bd.py', 'src\\tests\\test_querys_tarjetas.py', 'src\\utils\Dateformat.py', 'src\\app.py', 'src\\config.py']
 
 def contador_archivos(routes_files):
     result = 0
