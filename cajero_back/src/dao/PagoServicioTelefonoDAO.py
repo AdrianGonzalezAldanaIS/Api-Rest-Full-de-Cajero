@@ -1,8 +1,11 @@
 from interfaces.IPagoServicioTelefono import IPagoServicioTelefono
-from singleton.GestorBasedatos import ManejadorBaseDatos
+from  database.postgres_db import PostgresDB
 from models.TelefonoDetalle import TelefonoDetalle
 from models.Adeudo import Adeudo
-#import pdb
+
+
+pgdb = PostgresDB()
+
 class PagosServicioTelefonoDAO(IPagoServicioTelefono):
     
     @classmethod
@@ -11,9 +14,7 @@ class PagosServicioTelefonoDAO(IPagoServicioTelefono):
         if isinstance(id, int):
             
             try:
-                connection = ManejadorBaseDatos.get_connection()
-                print("holaqasqa")
-                with connection.cursor() as cursor:
+                with pgdb.get_cursor() as cursor:
                     cursor.execute("SELECT a.id_adeudo, t.id_tarjeta, s.id_servicio, u.nombres, u.num_telefono, a.activo FROM adeudos a, tarjetas t, servicios s, usuarios u WHERE t.id_tarjeta = a.id_tarjeta AND a.id_servicio = s.id_servicio AND t.id_usuario = u.id_usuario And a.id_tarjeta = %s And a.id_servicio = 'NET-IN'", (id,))
                     row1 = cursor.fetchone()
                     print("row",row1)
@@ -40,16 +41,13 @@ class PagosServicioTelefonoDAO(IPagoServicioTelefono):
             if len(datos_adeudo) != 0:
                 print("Entro a datos_adeudos")
                 try:
-                    connection = ManejadorBaseDatos.get_connection()
-                    with connection.cursor() as cursor:
+                    with pgdb.get_cursor() as cursor:
                         cursor.execute("INSERT INTO pagos_servicios(id_adeudo, fecha_pago, monto_pago, id_tarjeta, id_servicio) VALUES(%s, %s, %s, %s, %s);", (datos_adeudo['id_adeudo'],datos_adeudo['fecha_adeudo'],datos_adeudo['monto_adeudo'], datos_adeudo['id_tarjeta'], datos_adeudo['id_servicio']))
                         filas_afectadas = cursor.rowcount
-                        mensaje = "Regitro exitoso"
+                        mensaje = "Registro exitoso"
                         print("afectadas;", filas_afectadas)
                 except Exception as ex:
                     raise BaseException(ex)
-                finally:
-                    connection.commit()
         else:
             raise BaseException("El tipo de dato debe ser un entero")  
         return filas_afectadas, mensaje
@@ -57,8 +55,7 @@ class PagosServicioTelefonoDAO(IPagoServicioTelefono):
     def verifica_adeudo_telefono(self, id):
         if isinstance(id, int):
             try:
-                connection = ManejadorBaseDatos.get_connection()
-                with connection.cursor() as cursor:
+                with pgdb.get_cursor() as cursor:
                     cursor.execute("SELECT id_adeudo, id_servicio, id_tarjeta, fecha_adeudo, monto_adeudo, activo FROM adeudos WHERE id_tarjeta = %s AND id_servicio = 'NET-IN';", (id,))
                     row = cursor.fetchone()
                     adeudos = Adeudo(id_adeudo=row[0], id_servicio=row[1], id_tarjeta=row[2], fecha_adeudo=row[3], monto_adeudo=row[4], activo=row[5])
