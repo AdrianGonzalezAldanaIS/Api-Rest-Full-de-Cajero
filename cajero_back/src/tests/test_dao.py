@@ -2,8 +2,7 @@ import pytest
 #from dao.TarjetaDAO import TarjetaDao
 import datetime
 from decimal import Decimal
-#from exceptions.TipoDatoException import TipoDatoException
-#from dao.TarjetaDAO import TarjetaDao
+from exceptions.TipoDatoException import TipoDatoException
 from dao.TarjetaDAO import TarjetaDao
 
 
@@ -385,8 +384,3 @@ class TestQuerysTarjeta:
                              (1049, True)])
     def test_verfica_fecha_valores_no_validos(self, id, expected_result):
         pass
-    
-    
-    
-    
-    

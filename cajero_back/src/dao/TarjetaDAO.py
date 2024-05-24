@@ -180,7 +180,7 @@ class TarjetaDao(ITarjeta):
     def retirar(cls, id, cantidad):
         filas_afectadas = 0
         if isinstance(id, int) and id >= 0 and isinstance(cantidad, int) and cantidad >= 0:
-            flag, mensaje = cls.validar_cantidad(cls, id, cantidad)
+            flag, mensaje = cls.validar_cantidad(cls, id, cantidad)  # type: ignore
             if flag:
                 try:
                     with pgdb.get_cursor() as cursor:
