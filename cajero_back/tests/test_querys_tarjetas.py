@@ -1,9 +1,4 @@
 import pytest
-#from dao.TarjetaDAO import TarjetaDao
-import datetime
-from decimal import Decimal
-#from exceptions.TipoDatoException import TipoDatoException
-#from dao.TarjetaDAO import TarjetaDao
 from src.dao.TarjetaDAO import TarjetaDao
 
 

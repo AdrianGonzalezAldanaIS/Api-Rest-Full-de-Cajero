@@ -19,11 +19,11 @@ class ServicioTarjeta:
     def verifica_tarjeta(self, id):
         try:
             tarjeta = self.i_tarjeta.verifica_tarjeta(id)
-            if len(tarjeta)!= 0:
+            if tarjeta != None:
                 print("TARJETAAAA",tarjeta['verificada'])
-                return jsonify({"Estatus":tarjeta['verificada']})
+                return jsonify({"Estatus":True})
             else:
-                return jsonify({"Estatus":tarjeta['verificada']}), 404
+                return jsonify({"Estatus":False}), 404
         except Exception as ex:
             return jsonify({'messageSSSSS': str(ex)}),500
     
@@ -33,7 +33,7 @@ class ServicioTarjeta:
             print("Entro a fecha verificada")
             tarjeta = self.i_tarjeta.verifica_fecha(id)
             print("veri",tarjeta)
-            if tarjeta != None:
+            if tarjeta == True:
                 return jsonify({"Estatus":tarjeta})
             else:
                 return jsonify({"Estatus":tarjeta}), 404
@@ -43,11 +43,11 @@ class ServicioTarjeta:
     def verifica_bloqueo(self, id):
         try:
             tarjeta = self.i_tarjeta.verifica_bloqueo(id)
-            if len(tarjeta)!= 0:
+            if tarjeta != None:
                 print("TARJETAAAA",tarjeta['bloqueada'])
-                return jsonify({"Estatus":tarjeta['bloqueada']})
+                return jsonify({"Estatus":False})
             else:
-                return jsonify({"Estatus":tarjeta['bloqueada']}), 404
+                return jsonify({"Estatus":True}), 404
         except Exception as ex:
             return jsonify({'messageSSSSS': str(ex)}),500
         
