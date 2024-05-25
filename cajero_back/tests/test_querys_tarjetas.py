@@ -4,7 +4,7 @@ import datetime
 from decimal import Decimal
 #from exceptions.TipoDatoException import TipoDatoException
 #from dao.TarjetaDAO import TarjetaDao
-from dao.TarjetaDAO import TarjetaDao
+from src.dao.TarjetaDAO import TarjetaDao
 
 
 class TestQuerysTarjeta:

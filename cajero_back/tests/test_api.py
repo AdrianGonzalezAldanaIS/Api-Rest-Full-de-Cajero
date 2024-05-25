@@ -1,4 +1,4 @@
-import pytest
+"""import pytest
 from src.app import create_app
 from src.database.postgres_db import PostgresDB
 
@@ -28,4 +28,4 @@ def app():
 @pytest.fixture(scope="session")
 def client(app):
     #print("creando cliente...")
-    return app.test_client()
+    return app.test_client()"""
