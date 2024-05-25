@@ -40,12 +40,15 @@ def consulta_limite(id):
 def retirar(id, cantidad):
     return servicio_tarjeta.retirar(id, cantidad)
 
+
+"""
 @main.route('/depositar/<int:id>/<int:cantidad>')
 def depositar(id, cantidad):
     return servicio_tarjeta.depositar(id, cantidad)
 
+"""
 
-
+"""
 
 @main.route('/num_conexiones')
 def get_num_conexiones():
@@ -63,7 +66,7 @@ def get_tarjetas():
         return jsonify(tarjetas)
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
-"""
+
 @main.route('/<id>')
 def get_tarjeta(id):
     try:
@@ -74,7 +77,7 @@ def get_tarjeta(id):
             return jsonify({}), 400
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
-"""
+
 @main.route('/saldo/<id>')
 def get_saldo(id):
     try:
@@ -85,7 +88,7 @@ def get_saldo(id):
             return jsonify({}), 404
     except Exception as ex:
         return jsonify({'message': str(ex)}),500
-    
+"""
     
     
     

@@ -2,7 +2,6 @@
 from interfaces.ITarjeta import ITarjeta
 from models.Tarjeta import Tarjeta
 from models.UsuarioDetalle import UsuariDetalle
-from exceptions.BdException import BdException
 import datetime
 from  database.postgres_db import PostgresDB
 #from exceptions.TipoDatoException import TipoDatoException
@@ -152,6 +151,7 @@ class TarjetaDao(ITarjeta):
                     row = cursor.fetchone()
                     us_detalle = UsuariDetalle(row[0], row[1], row[2], row[3])
                     us_detalle = us_detalle.to_JSON()
+                    print("consulta saldo ",us_detalle)
             except Exception as ex:
                 raise BaseException(ex) 
         else:
@@ -180,7 +180,7 @@ class TarjetaDao(ITarjeta):
     def retirar(cls, id, cantidad):
         filas_afectadas = 0
         if isinstance(id, int) and id >= 0 and isinstance(cantidad, int) and cantidad >= 0:
-            flag, mensaje = cls.validar_cantidad(cls, id, cantidad)  # type: ignore
+            flag, mensaje = cls.validar_cantidad(id, cantidad)  # type: ignore
             if flag:
                 try:
                     with pgdb.get_cursor() as cursor:
@@ -195,7 +195,8 @@ class TarjetaDao(ITarjeta):
             raise BaseException("El tipo de dato debe ser un entero") 
         print("filas afectadas:",filas_afectadas)
         return filas_afectadas, mensaje
-
+    
+    @classmethod
     def validar_cantidad(cls, id, cantidad):
         flag = False
         if cantidad > 0:
@@ -223,6 +224,8 @@ class TarjetaDao(ITarjeta):
             mensaje = "La cantidad debe ser mayo a $0.00"
         return flag, mensaje
     
+    
+"""    
     @classmethod
     def depositar(cls, id, cantidad): 
         filas_afectadas = 0
@@ -239,6 +242,7 @@ class TarjetaDao(ITarjeta):
             else:
                 mensaje = "Cantidad no valida"
         return filas_afectadas, mensaje
+"""
     
     
     
@@ -251,7 +255,7 @@ class TarjetaDao(ITarjeta):
     
     
     
-    """ 
+""" 
         
     @classmethod
     def get_tarjetas(cls):
@@ -317,4 +321,5 @@ class TarjetaDao(ITarjeta):
                 num_conexiones = cursor.fetchone()[0]
             return num_conexiones
         except Exception as ex:
-            return -1"""
+            return -1
+"""

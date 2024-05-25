@@ -16,8 +16,8 @@ class TestQuerysTarjeta:
     #------------- Pruebas unitaria para parametros validos ---------
     
     @pytest.mark.parametrize("id, Tarjeta", 
-                             [(1000, {'id_tarjeta': 1000, 'fecha_verificada': '02/01/2027', 'nip': 3031, 'intentos': 0, 'saldo': 56000.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 75}),
-                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': 7880, 'intentos': 0, 'saldo': 78806.0, 'limite': 10000.0, 'bloqueada': True, 'verificada': True, 'id_usuario': 43}),
+                             [(1000, {'id_tarjeta': 1000, 'fecha_verificada': '02/01/2027', 'nip': 3031, 'intentos': 0, 'saldo': 55820.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 75}),
+                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': 7880, 'intentos': 0, 'saldo': 78696.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 43}),
                              (1002, {'id_tarjeta': 1002, 'fecha_verificada': '25/10/2025', 'nip': 7032, 'intentos': 0, 'saldo': 70326.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 96}),
                              (1003, {'id_tarjeta': 1003, 'fecha_verificada': '08/10/2028', 'nip': 9900, 'intentos': 1, 'saldo': 44912.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 10}),
                              (1004, {'id_tarjeta': 1004, 'fecha_verificada': '21/03/2024', 'nip': 4161, 'intentos': 0, 'saldo': 96954.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 8})])
@@ -232,7 +232,7 @@ class TestQuerysTarjeta:
     
     @pytest.mark.parametrize("id, expected_result", 
                              [(1000, {'id_tarjeta': 1000, 'fecha_verificada': '02/01/2027', 'nip': None, 'intentos': None, 'saldo': None, 'limite': None, 'bloqueada': False, 'verificada': None, 'id_usuario': None}),
-                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': None, 'intentos': None, 'saldo': None, 'limite': None, 'bloqueada': True, 'verificada': None, 'id_usuario': None}),
+                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': None, 'intentos': None, 'saldo': None, 'limite': None, 'bloqueada': False, 'verificada': None, 'id_usuario': None}),
                              (1002, {'id_tarjeta': 1002, 'fecha_verificada': '25/10/2025', 'nip': None, 'intentos': None, 'saldo': None, 'limite': None, 'bloqueada': False, 'verificada': None, 'id_usuario': None}),
                              (1003, {'id_tarjeta': 1003, 'fecha_verificada': '08/10/2028', 'nip': None, 'intentos': None, 'saldo': None, 'limite': None, 'bloqueada': False, 'verificada': None, 'id_usuario': None}),
                              (1004, {'id_tarjeta': 1004, 'fecha_verificada': '21/03/2024', 'nip': None, 'intentos': None, 'saldo': None, 'limite': None, 'bloqueada': False, 'verificada': None, 'id_usuario': None})])
@@ -311,7 +311,7 @@ class TestQuerysTarjeta:
     
     #------------- Pruebas unitaria para parametros validos ---------   
     
-    @pytest.mark.skip
+    #@pytest.mark.skip
     @pytest.mark.parametrize("id, nip, expected_status, excpect_affected", 
                              [(1000, 3031, True, 1),
                              (1001, 7880, True, 1),
@@ -378,14 +378,52 @@ class TestQuerysTarjeta:
         assert fecha_verificada == expected_result
     
     @pytest.mark.parametrize("id, expected_result", 
-                             [(1045, True),
-                             (1046, True),
-                             (1047, True),
-                             (1048, False),
-                             (1049, True)])
-    def test_verfica_fecha_valores_no_validos(self, id, expected_result):
-        pass
+                             [(1000, {'id_tarjeta': 1000, 'id_usuario': 75, 'nombre': 'Winnie', 'saldo': 55820.0}),
+                             (1001, {'id_tarjeta': 1001, 'id_usuario': 43, 'nombre': 'Emogene', 'saldo': 78696.0}),
+                             (1002, {'id_tarjeta': 1002, 'id_usuario': 96, 'nombre': 'Aksel', 'saldo': 70326.0}),
+                             (1003, {'id_tarjeta': 1003, 'id_usuario': 10, 'nombre': 'Bertie', 'saldo': 44912.0}),
+                             (1004, {'id_tarjeta': 1004, 'id_usuario': 8, 'nombre': 'Anette', 'saldo': 96954.0})])
+    def test_consulta_saldo_id_valido(self, id, expected_result):
+        assert TarjetaDao.consulta_saldo(id) == expected_result
     
+    
+    @pytest.mark.parametrize("id, expected_result", 
+                             [("1000", "El tipo de dato debe ser un entero"),
+                             ("1001", "El tipo de dato debe ser un entero"),
+                             (10.2, "El tipo de dato debe ser un entero"),
+                             ("1003", "El tipo de dato debe ser un entero"),
+                             (10.4, "El tipo de dato debe ser un entero")])
+    def test_consulta_saldo_id_invalido(self, id, expected_result):
+        with pytest.raises(BaseException) as error:
+            TarjetaDao.consulta_saldo(id)
+        assert  str(error.value) == expected_result
+    
+    @pytest.mark.parametrize("id, expected_result", 
+                             [(1000, {'id_tarjeta': 1000, 'fecha_verificada': '02/01/2027', 'nip': None, 'intentos': None, 'saldo': None, 'limite': 10000.0, 'bloqueada': None, 'verificada': None, 'id_usuario': None}),
+                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': None, 'intentos': None, 'saldo': None, 'limite': 10000.0, 'bloqueada': None, 'verificada': None, 'id_usuario': None}),
+                             (1002, {'id_tarjeta': 1002, 'fecha_verificada': '25/10/2025', 'nip': None, 'intentos': None, 'saldo': None, 'limite': 10000.0, 'bloqueada': None, 'verificada': None, 'id_usuario': None}),
+                             (1003, {'id_tarjeta': 1003, 'fecha_verificada': '08/10/2028', 'nip': None, 'intentos': None, 'saldo': None, 'limite': 10000.0, 'bloqueada': None, 'verificada': None, 'id_usuario': None}),
+                             (1004, {'id_tarjeta': 1004, 'fecha_verificada': '21/03/2024', 'nip': None, 'intentos': None, 'saldo': None, 'limite': 10000.0, 'bloqueada': None, 'verificada': None, 'id_usuario': None})])
+    def test_consulta_limite_id_valido(self, id, expected_result):
+        assert TarjetaDao.consulta_limite(id) == expected_result
+    
+    @pytest.mark.parametrize("id, expected_result", 
+                             [("1000", "El tipo de dato debe ser un entero"),
+                             ("1001", "El tipo de dato debe ser un entero"),
+                             (10.2, "El tipo de dato debe ser un entero"),
+                             ("1003", "El tipo de dato debe ser un entero"),
+                             (10.4, "El tipo de dato debe ser un entero")])
+    def test_consulta_limite_id_invalido(self, id, expected_result):
+        with pytest.raises(BaseException) as error:
+            TarjetaDao.consulta_limite(id)
+        assert  str(error.value) == expected_result
+        
+
+    @pytest.mark.parametrize("id, cantidad, expected_result", 
+                             [(1015, 10 ,(1,"Cantidad aceptada"))])
+    def test_retirar_id_valido(self, id, cantidad,  expected_result):
+        assert TarjetaDao.retirar(id, cantidad) == expected_result
+
     
     
     

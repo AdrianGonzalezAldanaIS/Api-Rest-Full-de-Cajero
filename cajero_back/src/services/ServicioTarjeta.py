@@ -95,7 +95,7 @@ class ServicioTarjeta:
                 return jsonify({"Mensaje":mensaje,"filas_afectadas":filas_afectadas})
         except Exception as ex:
             return jsonify({'message': str(ex)}),500
-
+"""
     def depositar(self, id, cantidad):
         try:
             filas_afectadas, mensaje = self.i_tarjeta.depositar(id, cantidad)
@@ -106,3 +106,4 @@ class ServicioTarjeta:
         except Exception as ex:
             return jsonify({'message': str(ex)}),500
 
+"""
