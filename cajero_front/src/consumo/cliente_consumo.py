@@ -29,35 +29,29 @@ class Cliente_cosnumo:
         print("dataaaa ", data)
         return data['Estatus']
     
-    def consulta_nip(self, num_tarjeta, nip):
-        url_nip = "http://localhost:4000/nip/"
-        resp = requests.get(url_nip + num_tarjeta+"/"+nip)
+    def consulta_nip(self, id_tarjeta, nip):
+        url_nip = f"http://localhost:4000/api/tarjetas/nip/{id_tarjeta}/{nip}"
+        resp = requests.get(url_nip)
         data = json.loads(resp.content)
         return data
     
-    def consulta_saldo(self, num_tarjeta):
-        url_saldo = "http://localhost:4000/retiro/saldo/"
-        resp = requests.get(url_saldo + num_tarjeta)
+    def consulta_saldo(self, id_tarjeta):
+        url_saldo = f"http://localhost:4000/api/tarjetas/saldo/{id_tarjeta}"
+        resp = requests.get(url_saldo)
         data = json.loads(resp.content)
-        return data['mensaje_alert']
+        return data
     
     
-    def consulta_limite(self, num_tarjeta):
-        url_limite = "http://localhost:4000/retiro/limite/"
-        resp = requests.get(url_limite + num_tarjeta)
+    def consulta_limite(self, id_tarjeta):
+        url_limite = f"http://localhost:4000/api/tarjetas/limite/{id_tarjeta}"
+        resp = requests.get(url_limite)
         data = json.loads(resp.content)
-        return data['mensaje_alert']
+        return data
+    
+    def retirar(self, id_tarjeta, cantidad):
+        print("YYYCantidad",cantidad)
+        url_actualiza = f"http://localhost:4000/api/tarjetas/retirar/{id_tarjeta}"
+        response = requests.post(url_actualiza, json={'cantidad': cantidad})
+        data = response.json()
+        return data
 
-    def verifica_saldo(self,num_tarjeta,cantidad):
-        url_verifica_saldo = "http://localhost:4000/retira/saldo/"
-        resp = requests.get(url_verifica_saldo + num_tarjeta+"/"+str(cantidad))
-        data = json.loads(resp.content)
-        return data['mensaje_alert']
-    
-    def verifica_limite(self, num_tarjeta,cantidad):
-        url_verifica_limite = "http://localhost:4000/retira/limite/"
-        resp = requests.get(url_verifica_limite + num_tarjeta+"/"+str(cantidad))
-        data = json.loads(resp.content)
-        return data['mensaje_alert']
-    
-    

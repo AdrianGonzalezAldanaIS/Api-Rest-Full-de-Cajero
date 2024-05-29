@@ -1,4 +1,4 @@
-from flask import Blueprint, jsonify
+from flask import Blueprint, jsonify, request
 from dao.TarjetaDAO import TarjetaDao
 from services.ServicioTarjeta import ServicioTarjeta
 
@@ -36,8 +36,11 @@ def consulta_saldo(id):
 def consulta_limite(id):
     return servicio_tarjeta.consulta_limite(id)
 
-@main.route('/retirar/<int:id>/<int:cantidad>')
-def retirar(id, cantidad):
+@main.route('/retirar/<int:id>/', methods = ['POST'])
+def retirar(id):
+    cantidad = request.json.get('cantidad') # type: ignore
+ # type: ignore
+    print("cantidad1111",type(cantidad))
     return servicio_tarjeta.retirar(id, cantidad)
 
 

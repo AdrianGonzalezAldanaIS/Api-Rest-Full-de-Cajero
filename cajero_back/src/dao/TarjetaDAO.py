@@ -139,7 +139,7 @@ class TarjetaDao(ITarjeta):
         else:
             raise BaseException("El tipo de dato debe ser un entero") 
         print("Res", es_valida, filas_afectadas)
-        return es_valida, filas_afectadas
+        return es_valida, filas_afectadas, tarjeta['intentos']
     
     @classmethod
     def consulta_saldo(cls, id):
@@ -186,10 +186,19 @@ class TarjetaDao(ITarjeta):
     
     @classmethod
     def retirar(cls, id, cantidad):
+        print("ID",id)
+        print("SSSSCantidad",cantidad)
         filas_afectadas = 0
-        if isinstance(id, int) and id >= 0 and isinstance(cantidad, int) and cantidad >= 0:
-            flag, mensaje = cls.validar_cantidad(id, cantidad)  # type: ignore
+        flag = False
+        mensaje = ""
+        flag, mensaje = cls.validar_cantidad(id, cantidad)  # type: ignore
+        if isinstance(id, int) and id >= 0 and isinstance(cantidad, float) and cantidad >= 0.0:
+            print("Entro1")
+            
+            print("FLAAAAG",flag)
+            print("MENSAJEE",mensaje)
             if flag:
+                print("Entro2")
                 try:
                     with pgdb.get_cursor() as cursor:
                         cursor.execute("UPDATE tarjetas SET saldo = saldo - %s WHERE id_tarjeta = %s;", (cantidad,id))
@@ -197,25 +206,30 @@ class TarjetaDao(ITarjeta):
                 except Exception as ex:
                     print(ex)
             else:
-                return filas_afectadas, mensaje
+                return filas_afectadas, mensaje, flag
         else:
-            print("entro a la excepcion")
-            raise BaseException("El tipo de dato debe ser un entero") 
+            return filas_afectadas, mensaje, flag
         print("filas afectadas:",filas_afectadas)
-        return filas_afectadas, mensaje
+        return filas_afectadas, mensaje, flag
     
     @classmethod
     def validar_cantidad(cls, id, cantidad):
+        print("Entro3")
+        print("IDbb",id)
+        print("SSSSbbbbCantidad",cantidad)
         flag = False
-        if cantidad > 0:
+        if cantidad > 0.0:
             try:
+                print("Entro al try")
                 with pgdb.get_cursor() as cursor:
                     cursor.execute("SELECT id_tarjeta, limite, saldo, fecha_verificada FROM tarjetas WHERE id_tarjeta = %s;", (id,))
                     row = cursor.fetchone()
                     tarjeta = Tarjeta(id_tarjeta=row[0], limite=row[1], saldo=row[2], fecha_verificada=row[3])
                     tarjeta = tarjeta.to_JSON()
-                    print("tar", tarjeta)
-                    if cantidad <= tarjeta['saldo']:
+                    print("tarzzzzz", tarjeta)
+                    if cantidad <= tarjeta['limite']:
+                        flag = True
+                        mensaje = "Cantidad dentro del limite"
                         if cantidad <= tarjeta['saldo']:
                             flag = True
                             mensaje = "Cantidad aceptada"
@@ -224,12 +238,14 @@ class TarjetaDao(ITarjeta):
                             mensaje = "Cantidad insuficiente"
                     else:
                         flag = False
-                        mensaje = "Cantidad mayor al límite"
+                        mensaje = "Cantidad mayor al limite"
             except Exception as ex:
                 print(ex)
         else:
             flag = False
             mensaje = "La cantidad debe ser mayo a $0.00"
+        print("FLAAAAG222",flag)
+        print("MENSAJEE222222",mensaje)
         return flag, mensaje
     
     

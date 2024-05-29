@@ -25,3 +25,4 @@ class Pago(FlaskForm):
         DataRequired()
     ])
     submit = SubmitField('Retirar')
+    #submit_depositar = SubmitField('Depositar')
