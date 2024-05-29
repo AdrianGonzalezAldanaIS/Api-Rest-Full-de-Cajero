@@ -80,22 +80,45 @@ def test_verifica_bloqueo_tarjeta_id_invalido(app, client):
         assert response.status_code == 404
         assert response.json == {"Estatus": True}
         
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+def test_verifica_nip_id_valido(app, client):
+    with client:
+        response = client.get("api/tarjetas/nip/1000/3031")
+        assert response.status_code == 200
+        assert response.json == {"Estatus": True,"afecto": 1}
+
+def test_consulta_saldo_id_valido(app, client):
+    with client:
+        response = client.get("api/tarjetas/saldo/1000")
+        assert response.status_code == 200
+        assert response.json == {"id_tarjeta": 1000,"id_usuario": 75,"nombre": "Winnie","saldo": 55760.0}
+
+def test_consulta_saldo_id_invalido(app, client):
+    with client:
+        response = client.get("api/tarjetas/saldo/999")
+        assert response.status_code == 404
+        assert response.json == {"Estatus": False}
+
+def test_consulta_limite_id_valido(app, client):
+    with client:
+        response = client.get("api/tarjetas/limite/1000")
+        assert response.status_code == 200
+        assert response.json == {"Estatus": 10000.0}
+
+def test_consulta_limite_id_invalido(app, client):
+    with client:
+        response = client.get("api/tarjetas/limite/999")
+        assert response.status_code == 404
+        assert response.json == {"Estatus": False}
+
+def test_retirar_id_valido(app, client):
+    with client:
+        response = client.get("api/tarjetas/retirar/1021/10")
+        assert response.status_code == 200
+        assert response.json == {"Mensaje": "Cantidad aceptada",
+  "filas_afectadas": 1
+}
+
+
+   
         
         

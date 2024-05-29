@@ -143,31 +143,39 @@ class TarjetaDao(ITarjeta):
     
     @classmethod
     def consulta_saldo(cls, id):
-        
+        us_detalle = None
         if isinstance(id, int):
             try:
                 with pgdb.get_cursor() as cursor:
                     cursor.execute("SELECT t.id_tarjeta, u.id_usuario, u.nombres, t.saldo FROM tarjetas t, usuarios u WHERE t.id_usuario = u.id_usuario AND t.id_tarjeta = %s;", (id,))
                     row = cursor.fetchone()
-                    us_detalle = UsuariDetalle(row[0], row[1], row[2], row[3])
-                    us_detalle = us_detalle.to_JSON()
-                    print("consulta saldo ",us_detalle)
+                    if row is not None:
+                        us_detalle = UsuariDetalle(row[0], row[1], row[2], row[3])
+                        us_detalle = us_detalle.to_JSON()
+                        print("consulta saldo ",us_detalle)
+                    else:
+                        us_detalle = False
             except Exception as ex:
                 raise BaseException(ex) 
         else:
-            raise BaseException("El tipo de dato debe ser un entero")  
+            raise BaseException("El tipo de dato debe ser un entero") 
+        print(us_detalle) 
         return us_detalle
     
     @classmethod
     def consulta_limite(cls, id):
+        tarjeta = None
         if isinstance(id, int) and id >= 0:
             try:
                 with pgdb.get_cursor() as cursor:
                     cursor.execute("SELECT id_tarjeta, limite, fecha_verificada FROM tarjetas WHERE id_tarjeta = %s;", (id,))
                     row = cursor.fetchone()
-                    tarjeta = Tarjeta(id_tarjeta=row[0], limite=row[1], fecha_verificada=row[2])
-                    tarjeta = tarjeta.to_JSON()
-                    print("tar", tarjeta)
+                    if row is not None:
+                        tarjeta = Tarjeta(id_tarjeta=row[0], limite=row[1], fecha_verificada=row[2])
+                        tarjeta = tarjeta.to_JSON()
+                        print("tar", tarjeta)
+                    else:
+                        tarjeta = False
             except Exception as ex:
                 print(ex)
         else:

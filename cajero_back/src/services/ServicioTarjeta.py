@@ -45,9 +45,9 @@ class ServicioTarjeta:
             tarjeta = self.i_tarjeta.verifica_bloqueo(id)
             if tarjeta != None:
                 print("TARJETAAAA",tarjeta['bloqueada'])
-                return jsonify({"Estatus":False})
+                return jsonify({"Estatus":tarjeta['bloqueada']})
             else:
-                return jsonify({"Estatus":True}), 404
+                return jsonify({"Estatus":tarjeta['bloqueada']}), 404 # type: ignore
         except Exception as ex:
             return jsonify({'messageSSSSS': str(ex)}),500
         
@@ -66,10 +66,10 @@ class ServicioTarjeta:
         try:
             tarjeta = self.i_tarjeta.consulta_saldo(id)
             print("id_tarjeta---",tarjeta)
-            if len(tarjeta) != 0:
+            if tarjeta != False:
                 return jsonify({"id_tarjeta":tarjeta['id_tarjeta'], "id_usuario":tarjeta['id_usuario'],"nombre":tarjeta['nombre'], "saldo":tarjeta['saldo']})
             else:
-                return jsonify({"id_tarjeta":tarjeta['id_tarjeta'], "id_usuario":tarjeta['id_usuario'],"nombre":tarjeta['nombre'], "saldo":tarjeta['saldo']}), 404
+                return jsonify({"Estatus":False}), 404
         except Exception as ex:
             return jsonify({'message': str(ex)}),500
 
@@ -77,10 +77,10 @@ class ServicioTarjeta:
         try:
             limite = self.i_tarjeta.consulta_limite(id)
             print("limite",limite)
-            if len(limite) != 0:
+            if limite != False:
                 return jsonify({"Estatus":limite['limite']})
             else:
-                return jsonify({"Estatus":limite['limite']}), 404
+                return jsonify({"Estatus":False}), 404
         except Exception as ex:
             return jsonify({'message': str(ex)}),500
 

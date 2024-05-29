@@ -26,4 +26,4 @@ if __name__ == '__main__':
     #app.register_blueprint(PagosServiciosTelefonoRoutes.main, url_prefix='/pago')
     #app.add_url_rule()
     app.register_error_handler(404, page_not_found)
-    app.run()
+    app.run(port = 4000)
