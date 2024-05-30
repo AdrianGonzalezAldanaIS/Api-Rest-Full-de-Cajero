@@ -1,18 +1,36 @@
 {% extends 'base.html' %}
 {% block title %}Cliente{% endblock %}     
 {% block content %}
-<section class="section-datas">
-    <span class="item-saldo item">Bienvenido: {{nombre}}</span>
-    <span class="item-saldo item">Tu saldo es: ${{saldo}}</span>
-    <span class="item-limite item">Puedes retirar hasta: ${{limite}}</span>
-</section>
-<br/>
-<form action="/retiro_deposito" method="POST">
-    {{ form.pago.label }} {{ form.pago(placeholder="$$$$", class="controls") }}
-    <span class="message-error">{{mensaje}}</span>
-    {{ form.hidden_tag() }}
-    {{ form.submit(class="button") }}
-    <section class="links">
-        <a class="link" href="{{ url_for('index') }}">Inicio</a>
-    </section>
-{% endblock %}       
+<div class="d-flex justify-content-center align-items-center min-vh-100">
+    <div class="card p-4 shadow-lg" style="width: 400px;">
+        <section class="section-datas mb-4">
+            <div class="alert alert-primary text-center">
+                <strong>Bienvenido:</strong> {{nombre}}
+            </div>
+            <div class="alert alert-info text-center">
+                <strong>Tu saldo es:</strong> ${{saldo}}
+            </div>
+            <div class="alert alert-warning text-center">
+                <strong>Puedes retirar hasta:</strong> ${{limite}}
+            </div>
+        </section>
+
+        <form action="/retiro_deposito" method="POST" class="mb-4">
+            <div class="form-group">
+                {{ form.pago.label(class="form-label") }}
+                {{ form.pago(placeholder="$$$$", class="form-control") }}
+            </div>
+            <span class="text-danger">{{mensaje}}</span>
+            {{ form.hidden_tag() }}
+            <div class="btn-group d-flex justify-content-between mt-3" role="group" aria-label="Basic example">
+                {{ form.submit_retirar(class="btn btn-danger") }}
+                {{ form.submit_depositar(class="btn btn-success") }}
+            </div>
+        </form>
+
+        <section class="links text-center mt-4">
+            <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}">Inicio</a>
+        </section>
+    </div>
+</div>
+{% endblock %}

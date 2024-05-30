@@ -43,6 +43,7 @@ class ServicioTarjeta:
     def verifica_bloqueo(self, id):
         try:
             tarjeta = self.i_tarjeta.verifica_bloqueo(id)
+            print("AAAbloqueada",tarjeta)
             if tarjeta != None:
                 print("TARJETAAAA",tarjeta['bloqueada'])
                 return jsonify({"Estatus":tarjeta['bloqueada']})
@@ -87,19 +88,24 @@ class ServicioTarjeta:
     def retirar(self, id, cantidad):
         try:
             filas_afectadas, mensaje, flag = self.i_tarjeta.retirar(id, cantidad) # type: ignore
-            print("filas:", filas_afectadas)
-            print("mensaje:", mensaje)
-            print("flag:", flag)
-            if filas_afectadas != 0:
+            print("Mensaje:", mensaje)
+            print("filas_afectadas:", filas_afectadas)
+            print("retiro_valido:", flag)
+            if filas_afectadas >= 0:
+                print("entro a filas afectadasWWWWWWWW")
+                print("Mensaje3333:", mensaje)
+                print("filas_afectadas333:", filas_afectadas)
+                print("retiro_valido3333333:", flag)
                 return jsonify({"Mensaje":mensaje,"filas_afectadas":filas_afectadas, "retiro_valido":flag})
             else:
+                print("entro a filas afectadas FALSE")
                 return jsonify({"Mensaje":mensaje,"filas_afectadas":filas_afectadas, "retiro_valido":flag})
         except Exception as ex:
             return jsonify({'message': str(ex)}),500
-"""
+
     def depositar(self, id, cantidad):
         try:
-            filas_afectadas, mensaje = self.i_tarjeta.depositar(id, cantidad)
+            filas_afectadas, mensaje = self.i_tarjeta.depositar(id, cantidad) # type: ignore
             if filas_afectadas != 0:
                 return jsonify({"Mensaje":mensaje,"filas_afectadas":filas_afectadas})
             else:
@@ -107,4 +113,3 @@ class ServicioTarjeta:
         except Exception as ex:
             return jsonify({'message': str(ex)}),500
 
-"""

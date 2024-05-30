@@ -31,9 +31,9 @@ class ITarjeta(metaclass=ABCMeta):
     @abstractmethod
     def retirar(cls, id, cantidad):
         pass
-"""    
+   
     @abstractmethod
     def depositar(cls, id, cantidad):
         pass
-"""    
+   
     

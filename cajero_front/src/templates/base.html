@@ -1,22 +1,33 @@
 <!DOCTYPE html>
-<html>
-
-    <title>{% block title %} {% endblock%}</title>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container">
-        <header class="header">
+        <header class="text-center my-5">
             <h1>Banco DeltaFi</h1>
             <h3>Bienvenido</h3>
         </header>
-        <section class="main">
+
+        <main>
             {% block content %}
             {% endblock %}
-        </section>
-        <footer class="footer">
-            <span>Todos los derechos a DeltaFi</span>
+        </main>
+
+        <footer class="footer text-center mt-5">
+            <span>&copy; {{ current_year }} Todos los derechos reservados a DeltaFi</span>
         </footer>
     </div>
+    
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </body>
 </html>

@@ -21,8 +21,8 @@ class Nip(FlaskForm):
     submit = SubmitField('Enviar')
 
 class Pago(FlaskForm):
-    pago = FloatField("Ingresa el monto a retirar", validators=[
+    pago = FloatField("Ingresa el monto a retirar/depositar", validators=[
         DataRequired()
     ])
-    submit = SubmitField('Retirar')
-    #submit_depositar = SubmitField('Depositar')
+    submit_retirar = SubmitField('Retirar')
+    submit_depositar = SubmitField('Depositar')

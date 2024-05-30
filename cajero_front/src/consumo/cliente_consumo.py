@@ -54,4 +54,12 @@ class Cliente_cosnumo:
         response = requests.post(url_actualiza, json={'cantidad': cantidad})
         data = response.json()
         return data
+    
+    def depositar(self, id_tarjeta, cantidad):
+        print("XXXCantidadXXX",cantidad)
+        url_actualiza = f"http://localhost:4000/api/tarjetas/depositar/{id_tarjeta}"
+        response = requests.post(url_actualiza, json={'cantidad': cantidad})
+        data = response.json()
+        print("DDATAAAA",data)
+        return data
 

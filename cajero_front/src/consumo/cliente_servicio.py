@@ -55,3 +55,13 @@ class ClienteServicio():
             respuesta["mensaje"] = data['Mensaje']
             respuesta["retiro"] = data['retiro_valido']
         return respuesta
+    
+    def realizar_deposito(self, id_tarjeta, cantidad):
+        print("XXXCantidad",cantidad)
+        saldo = self.cliente.consulta_saldo(id_tarjeta)
+        data = self.cliente.depositar(id_tarjeta, cantidad)
+        print("DDATAAAAxxxxxxx",data)
+        respuesta  = {"mensaje":"Deposito exitoso","deposito":True,"saldo":saldo['saldo']}
+        if data['filas_afectadas'] == 0:
+            respuesta["mensaje"] = data['Mensaje']
+        return respuesta

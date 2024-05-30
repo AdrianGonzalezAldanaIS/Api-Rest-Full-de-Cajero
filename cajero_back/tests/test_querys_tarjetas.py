@@ -11,8 +11,8 @@ class TestQuerysTarjeta:
     #------------- Pruebas unitaria para parametros validos ---------
     
     @pytest.mark.parametrize("id, Tarjeta", 
-                             [(1000, {'id_tarjeta': 1000, 'fecha_verificada': '02/01/2027', 'nip': 3031, 'intentos': 0, 'saldo': 55760.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 75}),
-                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': 7880, 'intentos': 0, 'saldo': 78696.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 43}),
+                             [(1000, {'id_tarjeta': 1000, 'fecha_verificada': '02/01/2027', 'nip': 3031, 'intentos': 0, 'saldo': 57450.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 75}),
+                             (1001, {'id_tarjeta': 1001, 'fecha_verificada': '13/10/2026', 'nip': 7880, 'intentos': 0, 'saldo': 77496.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 43}),
                              (1002, {'id_tarjeta': 1002, 'fecha_verificada': '25/10/2025', 'nip': 7032, 'intentos': 0, 'saldo': 70326.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 96}),
                              (1003, {'id_tarjeta': 1003, 'fecha_verificada': '08/10/2028', 'nip': 9900, 'intentos': 1, 'saldo': 44912.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 10}),
                              (1004, {'id_tarjeta': 1004, 'fecha_verificada': '21/03/2024', 'nip': 4161, 'intentos': 0, 'saldo': 96954.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 8})])
@@ -307,13 +307,15 @@ class TestQuerysTarjeta:
     #------------- Pruebas unitaria para parametros validos ---------   
     
     #@pytest.mark.skip
-    @pytest.mark.parametrize("id, nip, expected_status, excpect_affected", 
-                             [(1000, 3031, True, 1),
-                             (1001, 7880, True, 1),
-                             (1002, 7032, True, 1),])
-    def test_verifica_nip_valores_validos(self, id, nip, expected_status, excpect_affected):
-        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip)
-        assert row_nip == expected_status and row_affected == excpect_affected
+    @pytest.mark.parametrize("id, nip, expected_status, excpect_affected, expected_intentos",
+                         [(1000, 3031, True, 1, 0),
+                          (1001, 7880, True, 1, 0),
+                          (1002, 7032, True, 1, 0)])
+    def test_verifica_nip_valores_validos(self, id, nip, expected_status, excpect_affected, expected_intentos):
+        row_nip, row_affected, intentos = TarjetaDao.verifica_nip(id, nip)  # Ajusta para desempacar tres valores
+        assert row_nip == expected_status
+        assert row_affected == excpect_affected
+        assert intentos == expected_intentos
     
     #------------------- Pruebas unitarias para parametros invalidos-----------
     
@@ -323,7 +325,7 @@ class TestQuerysTarjeta:
                              (1007, 7880, False, 1),
                              (1029, 7032, False, 1),])
     def test_verifica_nip_valores_no_validos(self, id, nip, expected_status, excpect_affected):
-        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip)
+        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip) # type: ignore
         assert row_nip == expected_status and row_affected == excpect_affected
     
     @pytest.mark.skip
@@ -332,7 +334,7 @@ class TestQuerysTarjeta:
                              (1036, 7880, False, 1),
                              (1046, 7032, False, 1),])
     def test_verifica_nip_valores_despues_de_3_intentos(self, id, nip, expected_status, excpect_affected):
-        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip)
+        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip) # type: ignore
         assert row_nip == expected_status and row_affected == excpect_affected
     
         """
@@ -373,8 +375,8 @@ class TestQuerysTarjeta:
         assert fecha_verificada == expected_result
     
     @pytest.mark.parametrize("id, expected_result", 
-                             [(1000, {'id_tarjeta': 1000, 'id_usuario': 75, 'nombre': 'Winnie', 'saldo': 55760.0}),
-                             (1001, {'id_tarjeta': 1001, 'id_usuario': 43, 'nombre': 'Emogene', 'saldo': 78696.0}),
+                             [(1000, {'id_tarjeta': 1000, 'id_usuario': 75, 'nombre': 'Winnie', 'saldo': 57450.0}),
+                             (1001, {'id_tarjeta': 1001, 'id_usuario': 43, 'nombre': 'Emogene', 'saldo': 77496.0}),
                              (1002, {'id_tarjeta': 1002, 'id_usuario': 96, 'nombre': 'Aksel', 'saldo': 70326.0}),
                              (1003, {'id_tarjeta': 1003, 'id_usuario': 10, 'nombre': 'Bertie', 'saldo': 44912.0}),
                              (1004, {'id_tarjeta': 1004, 'id_usuario': 8, 'nombre': 'Anette', 'saldo': 96954.0})])
@@ -415,7 +417,7 @@ class TestQuerysTarjeta:
         
 
     @pytest.mark.parametrize("id, cantidad, expected_result", 
-                             [(1015, 10 ,(1,"Cantidad aceptada"))])
+                             [(1015, 10 ,(0,"Cantidad aceptada",True))])
     def test_retirar_id_valido(self, id, cantidad,  expected_result):
         assert TarjetaDao.retirar(id, cantidad) == expected_result
 

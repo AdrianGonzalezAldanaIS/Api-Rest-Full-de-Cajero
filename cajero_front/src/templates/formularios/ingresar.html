@@ -1,12 +1,32 @@
 {% extends 'base.html' %}
 {% block title %}Ingresar{% endblock %}     
 {% block content %}
-<form action="/tarjeta" method="post">
-    {{ form.num_tarjeta.label }} {{ form.num_tarjeta(placeholder="####", class="controls") }}
-    <br/>
-    <span class="message-error">{{mensaje}}</span>
-    <br/>
-    {{ form.hidden_tag() }}
-    {{ form.submit(class="button") }}
-</form>
-{% endblock %}       
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Ingresar Tarjeta</h4>
+                </div>
+                <div class="card-body">
+                    <form action="/tarjeta" method="post">
+                        <div class="mb-3">
+                            {{ form.num_tarjeta.label(class="form-label") }} 
+                            {{ form.num_tarjeta(placeholder="####", class="form-control") }}
+                            {% if mensaje %}
+                            <div class="text-danger mt-2">{{ mensaje }}</div>
+                            {% endif %}
+                            {{ form.hidden_tag() }}
+                        </div>
+                    </br>
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+   

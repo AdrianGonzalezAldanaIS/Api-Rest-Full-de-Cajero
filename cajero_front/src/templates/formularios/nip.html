@@ -1,16 +1,39 @@
 {% extends 'base.html' %}
 {% block title %}Nip{% endblock %}     
 {% block content %}
-{% if intentos > 0 %}
-        <span class="intentos">Intentos: {{intentos}}</span>
-    {% endif %}
-<form action="/Cuenta" method="POST">
-    {{ form.num_nip.label }} {{ form.num_nip(placeholder="####", class="controls") }}
-    <span class="message-error">{{mensaje}}</span>
-    {{ form.hidden_tag() }}
-    {{ form.submit(class="button") }}
-    <section class="links">
-        <a class="link" href="{{ url_for('index') }}">Inicio</a>
-    </section>
-</form>
-{% endblock %}       
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header text-center">
+                    <h4>Ingresar NIP</h4>
+                </div>
+                <div class="card-body">
+                    {% if intentos > 0 %}
+                        <div class="alert alert-warning text-center">
+                            Intentos restantes: {{ intentos }}
+                        </div>
+                    {% endif %}
+                    <form action="/Cuenta" method="POST">
+                        <div class="mb-3">
+                            {{ form.num_nip.label(class="form-label") }}
+                            {{ form.num_nip(placeholder="####", class="form-control") }}
+                            {% if mensaje %}
+                            <div class="text-danger mt-2">{{ mensaje }}</div>
+                            {% endif %}
+                            {{ form.hidden_tag() }}
+                        </div>
+                    </br>
+                        <div class="d-grid">
+                            {{ form.submit(class="btn btn-primary") }}
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center">
+                    <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}">Inicio</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -209,7 +209,7 @@ class TarjetaDao(ITarjeta):
                 return filas_afectadas, mensaje, flag
         else:
             return filas_afectadas, mensaje, flag
-        print("filas afectadas:",filas_afectadas)
+        print("filas afectadasMMMM:",filas_afectadas)
         return filas_afectadas, mensaje, flag
     
     @classmethod
@@ -249,13 +249,13 @@ class TarjetaDao(ITarjeta):
         return flag, mensaje
     
     
-"""    
+    
     @classmethod
     def depositar(cls, id, cantidad): 
         filas_afectadas = 0
         mensaje = ""
         if isinstance(id, int) and id >= 0:
-            if isinstance(cantidad, int) and cantidad > 0:
+            if isinstance(cantidad, float) and cantidad > 0:
                 try:
                     with pgdb.get_cursor() as cursor:
                         cursor.execute("UPDATE tarjetas SET saldo = saldo + %s WHERE id_tarjeta = %s;", (cantidad,id))
@@ -266,7 +266,7 @@ class TarjetaDao(ITarjeta):
             else:
                 mensaje = "Cantidad no valida"
         return filas_afectadas, mensaje
-"""
+
     
     
     
