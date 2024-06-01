@@ -112,12 +112,12 @@ def test_consulta_limite_id_invalido(app, client):
 
 def test_retirar_id_valido(app, client):
     with client:
-        data = {"cantidad": 10}
+        data = {"cantidad": 10.0}
         response = client.post("api/tarjetas/retirar/1021/", json=data)
-        print("resonse",response.json)
+        print("response",response.json)
         assert response.status_code == 200
         assert response.json == {"Mensaje": "Cantidad aceptada",
-  "filas_afectadas": 0,"retiro_valido":True}
+  "filas_afectadas": 1,"retiro_valido":True}
 
 
    

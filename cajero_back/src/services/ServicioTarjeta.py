@@ -91,7 +91,7 @@ class ServicioTarjeta:
             print("Mensaje:", mensaje)
             print("filas_afectadas:", filas_afectadas)
             print("retiro_valido:", flag)
-            if filas_afectadas >= 0:
+            if filas_afectadas > 0:
                 print("entro a filas afectadasWWWWWWWW")
                 print("Mensaje3333:", mensaje)
                 print("filas_afectadas333:", filas_afectadas)

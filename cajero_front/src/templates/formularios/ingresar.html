@@ -1,9 +1,30 @@
 {% extends 'base.html' %}
 {% block title %}Ingresar{% endblock %}     
 {% block content %}
+<style>
+    body {
+        background-color: #a9effd; /* Fondo de pantalla */
+    }
+    .card {
+        background-color: #caf4fc; /* Fondo del contenedor */
+        border: 2px solid #00B4D8; /* Bordes del contenedor */
+    }
+    .card-header {
+        background-color: #0077B6; /* Fondo del encabezado */
+        color: #FFFFFF; /* Color del texto del encabezado */
+    }
+    .btn-primary {
+        background-color: #03045E; /* Fondo del botón */
+        border-color: #03045E; /* Bordes del botón */
+    }
+    .btn-primary:hover {
+        background-color: #0077B6; /* Fondo del botón al pasar el ratón */
+        border-color: #0077B6; /* Bordes del botón al pasar el ratón */
+    }
+</style>
 <div class="container mt-5">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
+    <div class="row justify-content-center" >
+        <div class="col-md-6 p-4 shadow-lg" style="border-color: #03045E;">
             <div class="card">
                 <div class="card-header text-center">
                     <h4>Ingresar Tarjeta</h4>

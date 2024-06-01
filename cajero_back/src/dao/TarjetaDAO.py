@@ -192,6 +192,8 @@ class TarjetaDao(ITarjeta):
         flag = False
         mensaje = ""
         flag, mensaje = cls.validar_cantidad(id, cantidad)  # type: ignore
+        print("tarjetaDao-id",id, cantidad)
+        print("tarjetaDao-id",type(id), type(cantidad))
         if isinstance(id, int) and id >= 0 and isinstance(cantidad, float) and cantidad >= 0.0:
             print("Entro1")
             

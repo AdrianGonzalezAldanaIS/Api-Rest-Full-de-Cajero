@@ -1,15 +1,42 @@
 {% extends 'base.html' %}
 {% block title %}Nip{% endblock %}     
 {% block content %}
+<style>
+    body {
+        background-color: #a9effd; /* Fondo de pantalla */
+    }
+    .card {
+        background-color: #90E0EF; /* Fondo del contenedor */
+        border: 2px solid #00B4D8; /* Bordes del contenedor */
+    }
+    .card-header, .card-footer {
+        background-color: #0077B6; /* Fondo del encabezado y pie de página */
+        color: #FFFFFF; /* Color del texto del encabezado y pie de página */
+    }
+    .btn-primary {
+        background-color: #03045E; /* Fondo del botón */
+        border-color: #03045E; /* Bordes del botón */
+    }
+    .btn-primary:hover {
+        background-color: #0077B6; /* Fondo del botón al pasar el ratón */
+        border-color: #0077B6; /* Bordes del botón al pasar el ratón */
+    }
+    .btn-link {
+        color: #0077B6; /* Color del enlace */
+    }
+    .btn-link:hover {
+        color: #03045E; /* Color del enlace al pasar el ratón */
+    }
+</style>
 <div class="container mt-5">
     <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
+        
+            <div class="col-md-6 p-4 shadow-lg">
                 <div class="card-header text-center">
                     <h4>Ingresar NIP</h4>
                 </div>
                 <div class="card-body">
-                    {% if intentos > 0 %}
+                    {% if not intentos == None and intentos > 0 %}
                         <div class="alert alert-warning text-center">
                             Intentos restantes: {{ intentos }}
                         </div>
@@ -30,10 +57,10 @@
                     </form>
                 </div>
                 <div class="card-footer text-center">
-                    <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}">Inicio</a>
+                    <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}" style="color: #FFFFFF;">Inicio</a>
                 </div>
             </div>
-        </div>
+        
     </div>
 </div>
 {% endblock %}

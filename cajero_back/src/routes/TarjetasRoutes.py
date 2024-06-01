@@ -38,6 +38,7 @@ def consulta_limite(id):
 
 @main.route('/retirar/<int:id>/', methods = ['POST'])
 def retirar(id):
+    print("id",id)
     cantidad = request.json.get('cantidad') # type: ignore
     print("cantidad1111",type(cantidad))
     return servicio_tarjeta.retirar(id, cantidad)

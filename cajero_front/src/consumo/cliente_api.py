@@ -1,20 +1,19 @@
-from flask import Flask, jsonify, render_template, url_for, session, request, redirect, Blueprint
+from flask import Flask, jsonify, render_template, url_for, session, request, redirect, Blueprint, make_response
 import json
 from .cliente_servicio import ClienteServicio
 from formularios.tarjeta_forms import TarjetaForm, Nip, Pago
 
 main = Blueprint('cliente_cajero', __name__)
 
-"""app = Flask(__name__)
-app.secret_key = "2451456769873"
-"""
+
 @main.route('/')
 def index():
     form = TarjetaForm()
     return render_template("formularios/ingresar.html", form = form)
 
-@main.route('/tarjeta', methods=['POST'])
+@main.route('/tarjeta', methods=['GET', 'POST'])
 def validar_tarjeta():
+    num = None
     trajeta_form = TarjetaForm()
     if request.method == 'POST':
         cl = ClienteServicio()
@@ -22,16 +21,17 @@ def validar_tarjeta():
         num = request.form['num_tarjeta']
         session['num'] = num
         respuesta = cl.valida_terjeta(num)
-
-        if trajeta_form.validate_on_submit():
-            if respuesta['verificada']:
+        if respuesta['verificada']:
+                print("tarjeta valida")
                 return redirect(url_for('cliente_cajero.formNip'))
-            else:
-                mensaje = respuesta['mensaje']
-                return render_template("formularios/ingresar.html", form = trajeta_form, mensaje = mensaje)
+        else:
+            print("tarjeta no valida")
+            mensaje = respuesta['mensaje']
+            return make_response(render_template("formularios/ingresar.html", form = trajeta_form, mensaje = mensaje,respuesta=num)),404
+            
     return jsonify({"respuesta":num})
 
-@main.route('/Nip/', methods = ['GET'])
+@main.route('/Nip', methods = ['GET'])
 def formNip():
     nip_form = Nip()
     intentos = 0
@@ -48,29 +48,30 @@ def getNip():
     nip_form = Nip()
     cl = ClienteServicio()
     pago_form = Pago()
-    
+    respuesta = None
     if request.method == 'POST':        
         mensaje = ""
         mensaje_retiro= ""
-        if nip_form.validate_on_submit():
-            if 'num' in session:
-                num = session['num']
-                num_nip = request.form['num_nip']
-                respuesta = cl.validate_nip(num, num_nip)
-                saldo = cl.verifica_saldo(num)
-                limite = cl.verifica_limite(num)
-                print("liiimite",limite)
-                if respuesta['verificada']:
-                    
-                    return render_template("formularios/cliente.html", form= pago_form,nombre=saldo['nombre'], saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje_retiro) # type: ignore
-                else:
-                    if respuesta['intentos'] >= 3:
-                        return redirect(url_for("index"))
-                    session['intentos'] = respuesta['intentos']
-                    mensaje = respuesta['mensaje']
+        if 'num' in session:
+            num = session['num']
+            print("num",session)
+            num_nip = request.form['num_nip']
+            respuesta = cl.validate_nip(num, num_nip)
+            saldo = cl.verifica_saldo(num)
+            limite = cl.verifica_limite(num)
+            if respuesta['verificada']:
+                
+                return render_template("formularios/cliente.html", form= pago_form,nombre=saldo['nombre'], saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje_retiro) # type: ignore
             else:
-                return redirect(url_for("cliente_cajero.index"))
-    return render_template("formularios/nip.html", form = nip_form, mensaje = mensaje, intentos=respuesta['intentos'])
+                if respuesta['intentos'] >= 3:
+                    return redirect(url_for("cliente_cajero.index")), 404
+                session['intentos'] = respuesta['intentos']
+                mensaje = respuesta['mensaje']
+                return render_template("formularios/nip.html", form = nip_form, mensaje = mensaje, intentos=None), 404
+        else:
+            return redirect(url_for("cliente_cajero.index"))
+            
+    return render_template("formularios/nip.html", form = nip_form, mensaje = mensaje, intentos=None) # type: ignore
 
 
 @main.route('/retiro_deposito', methods = ['POST'])
@@ -80,28 +81,22 @@ def retiro():
     cantidad = float(request.form['pago'])
     mensaje = ""
     if request.method == 'POST':
-        if 'num' in session:  
+        if 'num' in session:
             num = session['num']
             saldo = cl.verifica_saldo(num)
             limite = cl.verifica_limite(num)
-            if cantidad <= 0:
+            print("cantidad",cantidad)
+            if cantidad <= 1:
                 mensaje = "La cantidad debe ser mayor a cero 😒"
-            if pago_form.validate_on_submit():
-                if pago_form.submit_retirar.data:
-                    respuesta = cl.realiza_retiro(num, cantidad)
-                    saldo = cl.verifica_saldo(num)
-                    return render_template("formularios/cliente.html", form= pago_form, saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje, nombre=saldo['nombre'])
-                elif pago_form.submit_depositar.data:
-                    print("ENtro a depositar")
-                    respuesta = cl.realizar_deposito(num, cantidad)
-                    saldo = cl.verifica_saldo(num)
-                    print("Saldo actual ",saldo['saldo'])
-                    return render_template("formularios/cliente.html", form= pago_form, saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje, nombre=saldo['nombre'])
-            else:
-                redirect(url_for("cliente_cajero.formNip"))
+            if request.form.get('submit_retirar') == 'Retirar':
+                cl.realiza_retiro(num, cantidad)
+                saldo = cl.verifica_saldo(num)
+                return render_template("formularios/cliente.html", form= pago_form, saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje, nombre=saldo['nombre'])
+            elif request.form.get('submit_depositar') =='Depositar':
+                cl.realizar_deposito(num, cantidad)
+                saldo = cl.verifica_saldo(num)
+                return render_template("formularios/cliente.html", form= pago_form, saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje, nombre=saldo['nombre'])
     return render_template("formularios/cliente.html", form= pago_form, saldo = saldo, limite = limite, mensaje = mensaje)
 
-"""
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
-"""
+
+
