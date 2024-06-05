@@ -31,7 +31,6 @@ class ClienteServicio():
 
     def validate_nip(self, num_tarjeta, nip):
         pasa = self.cliente.consulta_nip(num_tarjeta, nip)
-        print("pasaaaa ", pasa)
         respuesta = {"mensaje": "El NIP es correcto","verificada":True, "intentos":pasa['intentos']}
         if not pasa["Estatus"]:
             respuesta['mensaje'] = "Lo sentimos, tu NIP es incorrecto 🧐"
@@ -46,10 +45,8 @@ class ClienteServicio():
         return self.cliente.consulta_limite(num_tarjeta)
     
     def realiza_retiro(self,id_tarjeta,cantidad):
-        print("zzCantidad",cantidad)
         saldo = self.cliente.consulta_saldo(id_tarjeta)
         data = self.cliente.retirar(id_tarjeta, cantidad)
-        print("DATA",data)
         respuesta  = {"mensaje":"Retiro exitoso","retiro":True,"saldo":saldo['saldo']}
         if data['filas_afectadas'] == 0:
             respuesta["mensaje"] = data['Mensaje']
@@ -57,10 +54,8 @@ class ClienteServicio():
         return respuesta
     
     def realizar_deposito(self, id_tarjeta, cantidad):
-        print("XXXCantidad",cantidad)
         saldo = self.cliente.consulta_saldo(id_tarjeta)
         data = self.cliente.depositar(id_tarjeta, cantidad)
-        print("DDATAAAAxxxxxxx",data)
         respuesta  = {"mensaje":"Deposito exitoso","deposito":True,"saldo":saldo['saldo']}
         if data['filas_afectadas'] == 0:
             respuesta["mensaje"] = data['Mensaje']

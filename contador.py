@@ -1,4 +1,3 @@
-from src.exceptions.ArchivoException import ArchivoException
 import os.path
 
 codigo = ''
@@ -6,7 +5,7 @@ def contador(programa):
     count = 0
     com_multi = False
     try:
-        archivo = open(programa, 'r') 
+        archivo = open(programa, 'r', encoding='utf-8') 
         for linea in archivo:
             linea = linea.strip()
             #print(not linea)
@@ -28,7 +27,8 @@ def contador(programa):
         print(error)
     return count
 
-routes_files = ['src\\dao\\TarjetaDAO.py', 'src\\dao\\PagoServicioTelefonoDAO.py', 'src\\database\\postgres_db.py', 'src\\exceptions\\BdException.py', 'src\\interfaces\\ITarjeta.py', 'src\\interfaces\\IPagoServicioTelefono.py', 'src\\models\\Adeudo.py', 'src\\models\\PagoServicio.py', 'src\\models\\Tarjeta.py', 'src\\models\\TelefonoDetalle.py', 'src\\models\\UsuarioDetalle.py', 'src\\routes\\TarjetasRoutes.py', 'src\\routes\\PagosServiciosTelefonoRoutes.py', 'src\\services\\ServicioTarjeta.py', 'src\\services\\ServicioPagosServicios.py', 'src\\tests\\test_conn_bd.py', 'src\\tests\\test_querys_tarjetas.py', 'src\\utils\Dateformat.py', 'src\\app.py', 'src\\config.py']
+
+routes_files = ['cajero_back\\src\\dao\\TarjetaDAO.py',  'cajero_back\\src\\database\\postgres_db.py',  'cajero_back\\src\\interfaces\\ITarjeta.py', 'cajero_back\\src\\models\\Tarjeta.py', 'cajero_back\\src\\models\\UsuarioDetalle.py', 'cajero_back\\src\\routes\\TarjetasRoutes.py',  'cajero_back\\src\\services\\ServicioTarjeta.py', 'cajero_back\\src\\utils\\Dateformat.py', 'cajero_back\\src\\app.py', 'cajero_back\\src\\config.py', 'cajero_front\\src\\consumo\\cliente_api.py', 'cajero_front\\src\\consumo\\cliente_consumo.py', 'cajero_front\\src\\consumo\\cliente_servicio.py', 'cajero_front\\src\\formularios\\tarjeta_forms.py', 'cajero_front\\src\\templates\\base.html', 'cajero_front\\src\\templates\\formularios\\cliente.html', 'cajero_front\\src\\templates\\formularios\\ingresar.html', 'cajero_front\\src\\templates\\formularios\\nip.html', 'cajero_front\\src\\app.py', 'cajero_front\\src\\config.py']
 
 def contador_archivos(routes_files):
     result = 0
@@ -39,9 +39,9 @@ def contador_archivos(routes_files):
                 print(f"Archivo: {archivo} tiene {count} lineas")
                 result = result + count
         else:
-            raise ArchivoException("El argumento debe ser una lista")
+            raise BaseException("El argumento debe ser una lista")
     else:
-        raise ArchivoException("La lista esta vacia")
+        raise BaseException("La lista esta vacia")
     return result
     
 print(f"El total de líneas son: {contador_archivos(routes_files)}")

@@ -22,28 +22,24 @@ def validar_tarjeta():
         session['num'] = num
         respuesta = cl.valida_terjeta(num)
         if respuesta['verificada']:
-                print("tarjeta valida")
                 return redirect(url_for('cliente_cajero.formNip'))
         else:
-            print("tarjeta no valida")
             mensaje = respuesta['mensaje']
             return make_response(render_template("formularios/ingresar.html", form = trajeta_form, mensaje = mensaje,respuesta=num)),404
             
     return jsonify({"respuesta":num})
 
-@main.route('/Nip', methods = ['GET'])
+@main.route('/nip', methods = ['GET'])
 def formNip():
     nip_form = Nip()
     intentos = 0
     mensaje = ""
-    print("Entro a Nip")
-    print(session)
     if 'intentos' in session and 'mensaje'in session:
         intentos = session['intentos']
         intentos = 0
     return render_template("formularios/nip.html", form = nip_form, mensaje = mensaje, intentos = intentos)
 
-@main.route('/Cuenta', methods = ['POST'])
+@main.route('/cuenta', methods = ['POST'])
 def getNip():
     nip_form = Nip()
     cl = ClienteServicio()
@@ -54,7 +50,6 @@ def getNip():
         mensaje_retiro= ""
         if 'num' in session:
             num = session['num']
-            print("num",session)
             num_nip = request.form['num_nip']
             respuesta = cl.validate_nip(num, num_nip)
             saldo = cl.verifica_saldo(num)
@@ -63,8 +58,8 @@ def getNip():
                 
                 return render_template("formularios/cliente.html", form= pago_form,nombre=saldo['nombre'], saldo = saldo['saldo'], limite = limite['limite'], mensaje = mensaje_retiro) # type: ignore
             else:
-                if respuesta['intentos'] >= 3:
-                    return redirect(url_for("cliente_cajero.index")), 404
+                if respuesta['intentos'] > 3:
+                    return redirect(url_for("cliente_cajero.index"))
                 session['intentos'] = respuesta['intentos']
                 mensaje = respuesta['mensaje']
                 return render_template("formularios/nip.html", form = nip_form, mensaje = mensaje, intentos=None), 404
@@ -85,7 +80,6 @@ def retiro():
             num = session['num']
             saldo = cl.verifica_saldo(num)
             limite = cl.verifica_limite(num)
-            print("cantidad",cantidad)
             if cantidad <= 1:
                 mensaje = "La cantidad debe ser mayor a cero 😒"
             if request.form.get('submit_retirar') == 'Retirar':

@@ -1,2 +1,0 @@
-class TipoDatoException:
-    """Excepcion personalizada   """

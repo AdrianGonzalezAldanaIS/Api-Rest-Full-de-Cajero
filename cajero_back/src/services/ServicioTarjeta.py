@@ -19,20 +19,16 @@ class ServicioTarjeta:
     def verifica_tarjeta(self, id):
         try:
             tarjeta = self.i_tarjeta.verifica_tarjeta(id)
-            if tarjeta != None:
-                print("TARJETAAAA",tarjeta['verificada'])
+            if tarjeta['verificada'] != False: # type: ignore
                 return jsonify({"Estatus":True})
             else:
                 return jsonify({"Estatus":False}), 404
         except Exception as ex:
-            return jsonify({'messageSSSSS': str(ex)}),500
+            return jsonify({'Estatus': str(ex)}),500
     
     def verifica_fecha(self, id):
-        print("entro a la func")
         try:
-            print("Entro a fecha verificada")
             tarjeta = self.i_tarjeta.verifica_fecha(id)
-            print("veri",tarjeta)
             if tarjeta == True:
                 return jsonify({"Estatus":tarjeta})
             else:
@@ -43,9 +39,7 @@ class ServicioTarjeta:
     def verifica_bloqueo(self, id):
         try:
             tarjeta = self.i_tarjeta.verifica_bloqueo(id)
-            print("AAAbloqueada",tarjeta)
             if tarjeta != None:
-                print("TARJETAAAA",tarjeta['bloqueada'])
                 return jsonify({"Estatus":tarjeta['bloqueada']})
             else:
                 return jsonify({"Estatus":tarjeta['bloqueada']}), 404 # type: ignore
@@ -55,9 +49,8 @@ class ServicioTarjeta:
     def verifica_nip(self, id, nip):
         try:
             row = self.i_tarjeta.verifica_nip(id, nip)
-            print("nip---",row)
-            if row != None:
-                return jsonify({"Estatus":row[0], "afecto":row[1],"intentos":row[2]})
+            if row[0] != False: # type: ignore
+                return jsonify({"Estatus":row[0], "afecto":row[1],"intentos":row[2]}) # type: ignore
             else:
                 return jsonify({"Estatus":row[0], "afecto":row[1],"intentos":row[2]}), 404 # type: ignore
         except Exception as ex:
@@ -66,7 +59,6 @@ class ServicioTarjeta:
     def conslta_saldo(self, id):
         try:
             tarjeta = self.i_tarjeta.consulta_saldo(id)
-            print("id_tarjeta---",tarjeta)
             if tarjeta != False:
                 return jsonify({"id_tarjeta":tarjeta['id_tarjeta'], "id_usuario":tarjeta['id_usuario'],"nombre":tarjeta['nombre'], "saldo":tarjeta['saldo']}) # type: ignore
             else:
@@ -77,7 +69,6 @@ class ServicioTarjeta:
     def consulta_limite(self, id):
         try:
             limite = self.i_tarjeta.consulta_limite(id)
-            print("limite",limite)
             if limite != False:
                 return jsonify({"limite":limite['limite']}) # type: ignore
             else:
@@ -88,17 +79,9 @@ class ServicioTarjeta:
     def retirar(self, id, cantidad):
         try:
             filas_afectadas, mensaje, flag = self.i_tarjeta.retirar(id, cantidad) # type: ignore
-            print("Mensaje:", mensaje)
-            print("filas_afectadas:", filas_afectadas)
-            print("retiro_valido:", flag)
             if filas_afectadas > 0:
-                print("entro a filas afectadasWWWWWWWW")
-                print("Mensaje3333:", mensaje)
-                print("filas_afectadas333:", filas_afectadas)
-                print("retiro_valido3333333:", flag)
                 return jsonify({"Mensaje":mensaje,"filas_afectadas":filas_afectadas, "retiro_valido":flag})
             else:
-                print("entro a filas afectadas FALSE")
                 return jsonify({"Mensaje":mensaje,"filas_afectadas":filas_afectadas, "retiro_valido":flag})
         except Exception as ex:
             return jsonify({'message': str(ex)}),500

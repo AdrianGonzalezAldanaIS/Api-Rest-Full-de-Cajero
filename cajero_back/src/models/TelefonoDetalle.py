@@ -1,5 +1,4 @@
 
-"SELECT t.id_tarjeta, u.id_usuario, u.nombres, u.num_telefono, t.saldo, a.id_adeudo, a.monto_adeudo FROM tarjetas t, usuarios u, adeudos a WHERE t.id_usuario = u.id_usuario AND a.id_tarjeta = t.id_tarjeta AND t.id_tarjeta = %s;"
 class TelefonoDetalle:
     
     def __init__(self, id_adeudo, id_tarjeta=None, id_servicio=None, nombre=None, num_telefono=None, monto=None, meses=None, activo=None) -> None:

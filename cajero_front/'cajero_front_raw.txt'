@@ -1,0 +1,108 @@
+src\app.py
+    LOC: 26
+    LLOC: 14
+    SLOC: 14
+    Comments: 4
+    Single comments: 4
+    Multi: 0
+    Blank: 8
+    - Comment Stats
+        (C % L): 15%
+        (C % S): 29%
+        (C + M % L): 15%
+src\config.py
+    LOC: 11
+    LLOC: 7
+    SLOC: 8
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 3
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+src\consumo\cliente_api.py
+    LOC: 96
+    LLOC: 83
+    SLOC: 82
+    Comments: 2
+    Single comments: 0
+    Multi: 0
+    Blank: 14
+    - Comment Stats
+        (C % L): 2%
+        (C % S): 2%
+        (C + M % L): 2%
+src\consumo\cliente_consumo.py
+    LOC: 61
+    LLOC: 50
+    SLOC: 48
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 13
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+src\consumo\cliente_servicio.py
+    LOC: 62
+    LLOC: 54
+    SLOC: 49
+    Comments: 0
+    Single comments: 0
+    Multi: 4
+    Blank: 9
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 6%
+src\consumo\__init__.py
+    LOC: 0
+    LLOC: 0
+    SLOC: 0
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 0
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+src\formularios\tarjeta_forms.py
+    LOC: 28
+    LLOC: 14
+    SLOC: 19
+    Comments: 0
+    Single comments: 0
+    Multi: 4
+    Blank: 5
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 14%
+src\formularios\__init__.py
+    LOC: 0
+    LLOC: 0
+    SLOC: 0
+    Comments: 0
+    Single comments: 0
+    Multi: 0
+    Blank: 0
+    - Comment Stats
+        (C % L): 0%
+        (C % S): 0%
+        (C + M % L): 0%
+** Total **
+    LOC: 284
+    LLOC: 222
+    SLOC: 220
+    Comments: 6
+    Single comments: 4
+    Multi: 8
+    Blank: 52
+    - Comment Stats
+        (C % L): 2%
+        (C % S): 3%
+        (C + M % L): 5%

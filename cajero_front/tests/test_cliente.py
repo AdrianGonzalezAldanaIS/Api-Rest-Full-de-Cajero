@@ -45,7 +45,7 @@ def test_validar_tarjeta_id_invalido(app, client):
         assert response.status_code == 404 
         
 def test_valida_formulario_Nip(app, client):
-    response = client.get("/Nip", follow_redirects=True)
+    response = client.get("/nip", follow_redirects=True)
     assert response.status_code == 200 
 
 def test_validar_nip_id_invalido(app, client):
@@ -56,7 +56,7 @@ def test_validar_nip_id_invalido(app, client):
         data = {
             'num_nip': 8115
         }
-        response = client.post('/Cuenta', data=data, follow_redirects=True)
+        response = client.post('/cuenta', data=data, follow_redirects=True)
         assert response.status_code == 404
         with client.session_transaction() as session:
             assert session.get('num') == 1021
@@ -67,9 +67,8 @@ def test_validar_nip_id_valido(app, client):
     data = {
         'num_nip': 8112
     }
-    response = client.post('/Cuenta', data=data, follow_redirects=True)
+    response = client.post('/cuenta', data=data, follow_redirects=True)
     assert response.status_code == 200
-
     with client.session_transaction() as session:
         assert session.get('num') == 1021
 

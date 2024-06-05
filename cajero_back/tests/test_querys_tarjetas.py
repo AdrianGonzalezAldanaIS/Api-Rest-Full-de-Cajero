@@ -17,12 +17,6 @@ class TestQuerysTarjeta:
                              (1003, {'id_tarjeta': 1003, 'fecha_verificada': '08/10/2028', 'nip': 9900, 'intentos': 1, 'saldo': 44912.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 10}),
                              (1004, {'id_tarjeta': 1004, 'fecha_verificada': '21/03/2024', 'nip': 4161, 'intentos': 0, 'saldo': 96954.0, 'limite': 10000.0, 'bloqueada': False, 'verificada': True, 'id_usuario': 8})])
     def test_consulta_tarjeta_validas_5_primeras(self,id, Tarjeta):
-        """_summary_
-
-        Args:
-            id (int): Argumento de entrada
-            expected_result (bool): Argumrnto de salida esperado
-        """
         assert TarjetaDao.consulta_tarjeta(id) == Tarjeta
         
     @pytest.mark.parametrize("id, expected_result", 
@@ -318,28 +312,9 @@ class TestQuerysTarjeta:
         assert intentos == expected_intentos
     
     #------------------- Pruebas unitarias para parametros invalidos-----------
-    
-    @pytest.mark.skip
-    @pytest.mark.parametrize("id, nip, expected_status, excpect_affected", 
-                             [(1005, 3031, False, 1),
-                             (1007, 7880, False, 1),
-                             (1029, 7032, False, 1),])
-    def test_verifica_nip_valores_no_validos(self, id, nip, expected_status, excpect_affected):
-        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip) # type: ignore
-        assert row_nip == expected_status and row_affected == excpect_affected
-    
-    @pytest.mark.skip
-    @pytest.mark.parametrize("id, nip, expected_status, excpect_affected", 
-                             [(1029, 3031, False, 1),
-                             (1036, 7880, False, 1),
-                             (1046, 7032, False, 1),])
-    def test_verifica_nip_valores_despues_de_3_intentos(self, id, nip, expected_status, excpect_affected):
-        row_nip, row_affected = TarjetaDao.verifica_nip(id, nip) # type: ignore
-        assert row_nip == expected_status and row_affected == excpect_affected
-    
-        """
-        Pruebas unitarias para verificar fecha valida
-        """
+        
+        #Pruebas unitarias para verificar fecha valida
+        
         # ------------------------ Pruebas unitarias con valores validos---------------------------
     
     @pytest.mark.parametrize("id, expected_result", 

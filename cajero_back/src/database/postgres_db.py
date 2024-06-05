@@ -24,12 +24,12 @@ class PostgresDB:
     def get_cursor(self):
         if self.pool is None:
             self.connect()
-        con = self.pool.getconn()
+        con = self.pool.getconn() # type: ignore
         try:
             yield con.cursor()
             con.commit()
         finally:
-            self.pool.putconn(con)
+            self.pool.putconn(con) # type: ignore
 
 
 

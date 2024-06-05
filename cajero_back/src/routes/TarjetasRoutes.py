@@ -6,8 +6,6 @@ main = Blueprint('tarjeta_blueprint', __name__)
 tarjeta_dao = TarjetaDao()
 servicio_tarjeta = ServicioTarjeta(tarjeta_dao)
 
-
-
 @main.route('/<int:id>')
 def consulta_tarjeta(id):
     return servicio_tarjeta.consulta_tarjeta(id)
@@ -38,60 +36,13 @@ def consulta_limite(id):
 
 @main.route('/retirar/<int:id>/', methods = ['POST'])
 def retirar(id):
-    print("id",id)
     cantidad = request.json.get('cantidad') # type: ignore
-    print("cantidad1111",type(cantidad))
     return servicio_tarjeta.retirar(id, cantidad)
 
 @main.route('/depositar/<int:id>/', methods = ['POST'] )
 def depositar(id):
     cantidad = request.json.get('cantidad') # type: ignore
-    print("cantidad3333",type(cantidad))
     return servicio_tarjeta.depositar(id, cantidad)
 
 
-
-"""
-
-@main.route('/num_conexiones')
-def get_num_conexiones():
-    try:
-        tarjeta = TarjetaDao.get_num_conexiones()
-        
-        return jsonify(tarjeta)
-    except Exception as ex:
-        return jsonify({'message': str(ex)}),500
-
-@main.route('/')
-def get_tarjetas():
-    try:
-        tarjetas = TarjetaDao.get_tarjetas()
-        return jsonify(tarjetas)
-    except Exception as ex:
-        return jsonify({'message': str(ex)}),500
-
-@main.route('/<id>')
-def get_tarjeta(id):
-    try:
-        tarjeta = TarjetaDao.get_tarjeta_id(id)
-        if tarjeta != None:
-            return jsonify(tarjeta)
-        else:
-            return jsonify({}), 400
-    except Exception as ex:
-        return jsonify({'message': str(ex)}),500
-
-@main.route('/saldo/<id>')
-def get_saldo(id):
-    try:
-        tarjeta = TarjetaDao.get_tarjeta_saldo_id(id)
-        if tarjeta != None:
-            return jsonify(tarjeta)
-        else:
-            return jsonify({}), 404
-    except Exception as ex:
-        return jsonify({'message': str(ex)}),500
-"""
-    
-    
     

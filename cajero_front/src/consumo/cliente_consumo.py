@@ -26,7 +26,6 @@ class Cliente_cosnumo:
         url_bloqueada = f"http://localhost:4000/api/tarjetas/bloqueada/{id_tarjeta}"
         resp = requests.get(url_bloqueada)
         data = json.loads(resp.content)
-        print("dataaaa ", data)
         return data['Estatus']
     
     def consulta_nip(self, id_tarjeta, nip):
@@ -49,17 +48,14 @@ class Cliente_cosnumo:
         return data
     
     def retirar(self, id_tarjeta, cantidad):
-        print("YYYCantidad",cantidad)
         url_actualiza = f"http://localhost:4000/api/tarjetas/retirar/{id_tarjeta}"
         response = requests.post(url_actualiza, json={'cantidad': cantidad})
         data = response.json()
         return data
     
     def depositar(self, id_tarjeta, cantidad):
-        print("XXXCantidadXXX",cantidad)
         url_actualiza = f"http://localhost:4000/api/tarjetas/depositar/{id_tarjeta}"
         response = requests.post(url_actualiza, json={'cantidad': cantidad})
         data = response.json()
-        print("DDATAAAA",data)
         return data
 

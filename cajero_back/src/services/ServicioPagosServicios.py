@@ -9,7 +9,7 @@ class ServicioPagoServicios:
     def consulta_telefono(self, id):
         try:
             row = self.i_tarjeta.consulta_telefono(id)
-            if len(row) != 0:
+            if len(row) != 0: # type: ignore
                 return jsonify(row)
             else:
                 print("1")
@@ -20,7 +20,7 @@ class ServicioPagoServicios:
         
     def pago_telefono(self, id):
         try:
-            filas_afectadas, mensaje = self.i_tarjeta.pago_telefono(id)
+            filas_afectadas, mensaje = self.i_tarjeta.pago_telefono(id) # type: ignore
             print("filas:", filas_afectadas)
             print("mensaje:", mensaje)
             if filas_afectadas != 0:

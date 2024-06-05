@@ -66,3 +66,18 @@ class PagosServicioTelefonoDAO(IPagoServicioTelefono):
             raise BaseException("El tipo de dato debe ser un entero")  
         return adeudos
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
