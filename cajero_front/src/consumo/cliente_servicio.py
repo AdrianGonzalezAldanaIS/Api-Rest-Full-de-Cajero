@@ -19,7 +19,7 @@ class ClienteServicio():
             respuesta['verificada'] = False
             return respuesta
         elif not self.cliente.consulta_vencida(num_tarjet):
-            respuesta['mensaje'] = 'La tarjeta expiro'
+            respuesta['mensaje'] = 'La tarjeta expiró'
             respuesta['verificada'] = False
             return respuesta
         elif self.cliente.consulta_bloqueada(num_tarjet):

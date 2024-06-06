@@ -8,14 +8,14 @@ los formularios: ingresar.html, nip.html y cliente.html
 """
 
 class TarjetaForm(FlaskForm):
-    num_tarjeta = StringField("Numero de tarjeta", validators=[
+    num_tarjeta = StringField("Número de tarjeta", validators=[
         DataRequired(),
         Length(min=4, max=4, message='No cumple con el formato: ####')])
     
     submit = SubmitField('Enviar')
 
 class Nip(FlaskForm):
-    num_nip = PasswordField("Numero de nip ", validators=[
+    num_nip = PasswordField("Número de nip ", validators=[
         DataRequired(),
         Length(min=4, max=4, message='No cumple con el formato: ####')])
     submit = SubmitField('Enviar')
