@@ -21,16 +21,33 @@
         background-color: #0077B6; /* Fondo del botón al pasar el ratón */
         border-color: #0077B6; /* Bordes del botón al pasar el ratón */
     }
+    .loading-spinner {
+        display: none;
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #032b73;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 <div class="container mt-5">
-    <div class="row justify-content-center" >
+    <div class="row justify-content-center">
         <div class="col-md-6 p-4 shadow-lg" style="border-color: #03045E;">
             <div class="card">
                 <div class="card-header text-center">
                     <h4>Ingresar Tarjeta</h4>
                 </div>
                 <div class="card-body">
-                    <form action="/tarjeta" method="post">
+                    <form id="tarjetaForm" action="/tarjeta" method="post">
                         <div class="mb-3">
                             {{ form.num_tarjeta.label(class="form-label") }} 
                             {{ form.num_tarjeta(placeholder="####", class="form-control") }}
@@ -39,15 +56,21 @@
                             {% endif %}
                             {{ form.hidden_tag() }}
                         </div>
-                    </br>
+                        <br/>
                         <div class="d-grid">
                             {{ form.submit(class="btn btn-primary") }}
                         </div>
                     </form>
+                    <div class="loading-spinner" id="loadingSpinner"></div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script>
+document.getElementById('tarjetaForm').addEventListener('submit', function() {
+    document.getElementById('loadingSpinner').style.display = 'block';
+});
+</script>
 {% endblock %}
-   

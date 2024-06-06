@@ -27,40 +27,62 @@
     .btn-link:hover {
         color: #03045E; /* Color del enlace al pasar el ratón */
     }
+    .loading-spinner {
+        display: none;
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #032b73;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 <div class="container mt-5">
     <div class="row justify-content-center">
-        
-            <div class="col-md-6 p-4 shadow-lg">
-                <div class="card-header text-center">
-                    <h4>Ingresar NIP</h4>
-                </div>
-                <div class="card-body">
-                    {% if not intentos == None and intentos > 0 %}
-                        <div class="alert alert-warning text-center">
-                            Intentos restantes: {{ intentos }}
-                        </div>
-                    {% endif %}
-                    <form action="/cuenta" method="POST">
-                        <div class="mb-3">
-                            {{ form.num_nip.label(class="form-label") }}
-                            {{ form.num_nip(placeholder="####", class="form-control") }}
-                            {% if mensaje %}
-                            <div class="text-danger mt-2">{{ mensaje }}</div>
-                            {% endif %}
-                            {{ form.hidden_tag() }}
-                        </div>
-                    </br>
-                        <div class="d-grid">
-                            {{ form.submit(class="btn btn-primary") }}
-                        </div>
-                    </form>
-                </div>
-                <div class="card-footer text-center">
-                    <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}" style="color: #FFFFFF;">Inicio</a>
-                </div>
+        <div class="col-md-6 p-4 shadow-lg">
+            <div class="card-header text-center">
+                <h4>Ingresar NIP</h4>
             </div>
-        
+            <div class="card-body">
+                {% if not intentos == None and intentos > 0 %}
+                    <div class="alert alert-warning text-center">
+                        Intentos restantes: {{ intentos }}
+                    </div>
+                {% endif %}
+                <form id="nipForm" action="/cuenta" method="POST">
+                    <div class="mb-3">
+                        {{ form.num_nip.label(class="form-label") }}
+                        {{ form.num_nip(placeholder="####", class="form-control") }}
+                        {% if mensaje %}
+                        <div class="text-danger mt-2">{{ mensaje }}</div>
+                        {% endif %}
+                        {{ form.hidden_tag() }}
+                    </div>
+                    </br>
+                    <div class="d-grid">
+                        {{ form.submit(class="btn btn-primary") }}
+                    </div>
+                </form>
+                <div class="loading-spinner" id="loadingSpinner"></div>
+            </div>
+            <div class="card-footer text-center">
+                <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}" style="color: #FFFFFF;">Inicio</a>
+            </div>
+        </div>
     </div>
 </div>
+
+<script>
+document.getElementById('nipForm').addEventListener('submit', function() {
+    document.getElementById('loadingSpinner').style.display = 'block';
+});
+</script>
 {% endblock %}

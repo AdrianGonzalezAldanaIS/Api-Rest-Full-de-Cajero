@@ -45,6 +45,23 @@
     .btn-link:hover {
         color: #03045E; 
     }
+    .loading-spinner {
+        display: none;
+        border: 16px solid #f3f3f3;
+        border-top: 16px solid #032b73;
+        border-radius: 50%;
+        width: 120px;
+        height: 120px;
+        animation: spin 2s linear infinite;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
 <div class="d-flex justify-content-center align-items-center min-vh-10">
     <div class="card p-4 shadow-lg" style="width: 400px;">
@@ -60,7 +77,7 @@
             </div>
         </section>
 
-        <form action="/retiro_deposito" method="POST" class="mb-4">
+        <form id="retiroDepositoForm" action="/retiro_deposito" method="POST" class="mb-4">
             <div class="form-group">
                 {{ form.pago.label(class="form-label") }}
                 {{ form.pago(placeholder="$$$$", class="form-control") }}
@@ -72,10 +89,16 @@
                 {{ form.submit_depositar(class="btn btn-success") }}
             </div>
         </form>
-
+        <div class="loading-spinner" id="loadingSpinner"></div>
         <section class="links text-center mt-4">
             <a class="btn btn-link" href="{{ url_for('cliente_cajero.index') }}">Inicio</a>
         </section>
     </div>
 </div>
+
+<script>
+document.getElementById('retiroDepositoForm').addEventListener('submit', function() {
+    document.getElementById('loadingSpinner').style.display = 'block';
+});
+</script>
 {% endblock %}
